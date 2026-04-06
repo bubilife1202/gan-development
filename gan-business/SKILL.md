@@ -1,5 +1,5 @@
 ---
-name: gan-business
+name: business
 description: Use when validating business viability before building - adversarial loop between Business Planner and Business Critic. Covers market size, PMF, revenue model, unit economics, competitive moat.
 ---
 

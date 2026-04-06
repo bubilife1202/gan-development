@@ -1,5 +1,5 @@
 ---
-name: gan-product
+name: product
 description: Use when designing or improving product UX - adversarial loop between Designer and Product Critic. Covers UX/UI, usability, user flows, onboarding, empty states, accessibility, mobile responsiveness.
 ---
 

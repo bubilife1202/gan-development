@@ -1,5 +1,5 @@
 ---
-name: gan-code
+name: code
 description: Use when implementing or hardening code - adversarial loop between Implementer and Code Critic. Covers security, correctness, performance, type safety, error handling, scalability.
 ---
 
