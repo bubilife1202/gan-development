@@ -1,6 +1,6 @@
 ---
 name: code
-description: Use when implementing or hardening code - adversarial loop between Implementer and Code Critic. Covers security, correctness, performance, type safety, error handling, scalability.
+description: Use when implementing or hardening code - adversarial loop between Developer and Code Critic. Covers security, correctness, performance, type safety, error handling, scalability.
 ---
 
 # Code GAN
@@ -13,20 +13,22 @@ description: Use when implementing or hardening code - adversarial loop between 
 
 ```
 Round N:
-  1. Builder 코드 제출 (구현 + 빌드 증빙 + Guardrail 지표 측정값)
-  2. Critic 공격 (심각도별 + 파일:라인 + 재현 시나리오)
+  1. Builder 코드 제출 (구현 + 빌드 증빙 + Guardrail 측정 로그)
+  2. Critic 공격 (심각도별 + 파일:라인 + 재현 절차)
   3. Builder 반박/수용 (항목별 + 수정 커밋 또는 재현 불가 증빙)
-  4. Critic 재채점 (rubric 기반)
+  4. Critic 재채점 (rubric 산식 적용)
   5. PASS(8+) → 확정
      FAIL → Round N+1 (최대 4라운드)
-     Deadlock → 미해결 항목 + 리스크 태그 달고 진행
+     Deadlock → STOP. 사용자에게 판단 요청. 자동 진행 금지.
 ```
 
 ## Handoff: Product GAN → Code GAN
 
 Code GAN은 아래를 입력으로 받는다:
-- Product GAN 확정 설계
-- **Scorecard의 Code GAN 판정 기준 (Guardrail 지표)**
+- Product GAN 확정 설계 패키지 전체 (유저 플로우, 페이지 목록, 정보 구조)
+- Scorecard의 Code GAN 판정 기준 (Guardrail 지표 + 측정 방법)
+- **리스크 레지스터** (미완화 리스크 반드시 구현에서 고려)
+- **Business 결정 추적표** (PRD ← BIZ 매핑)
 
 개발자는 설계 변경 권한 없음. 설계 결함 발견 시 보고만 하고, Product GAN이 재개되어 수정 후 복귀.
 
@@ -35,28 +37,32 @@ Code GAN은 아래를 입력으로 받는다:
 ### 개발자 (Developer)
 - **영역:** 코드, 아키텍처, DB 스키마, API, 컴포넌트
 - **무기:** 코드 작성, 리팩토링, 마이그레이션, 테스트
-- **입력:** Product GAN 확정 설계
+- **입력:** Product GAN 확정 설계 패키지
 - **제약:** 설계 변경 권한 없음 (결함 보고만 가능)
 - **제출 의무:**
   ```
   ## Builder Round N 제출
 
   ### 구현 내용
-  - 변경 파일 목록 + 변경 사유
+  - [CODE-001] 변경 파일:라인 + 변경 사유 (참조: PRD-00N)
 
   ### 빌드/테스트 증빙
-  - 빌드 성공 여부: PASS/FAIL
-  - 테스트 결과: N/M passed
+  - 빌드 명령: `npm run build` → 결과: PASS/FAIL (로그 첨부)
+  - 테스트 명령: `npm test` → 결과: N/M passed (로그 첨부)
 
-  ### Guardrail 지표 측정
-  - Lighthouse 성능: N (목표: M)
-  - CRITICAL 취약점: N (목표: 0)
+  ### Guardrail 측정 증빙
+  - [SC-C01] 측정 명령: `npx lighthouse URL --output=json` → 점수: N (목표: M)
+  - [SC-C02] 측정 명령: `npm audit` → CRITICAL: N (목표: 0)
+
+  ### 리스크 레지스터 대응
+  - [RISK-001] → 코드에서 이렇게 완화: 파일:라인
 
   ### Critic 피드백 대응 (Round 2+)
   - [수용] 항목명 → 수정 파일:라인 + 변경 내용
-  - [기각] 항목명 → 재현 불가 증빙 또는 반박 근거
+  - [기각] 항목명 → 재현 불가 증빙 (테스트 코드/로그) 또는 설계상 불가 근거
   ```
-- **기각 규칙:** Critic 지적을 기각하려면 재현 불가 증빙(테스트 코드, 로그) 또는 설계상 불가 근거 필수. 증거 없는 기각은 수용으로 간주.
+- **결정ID 규칙:** `CODE-001` 형태. Product 결정 참조 시 `(참조: PRD-00N)`.
+- **기각 규칙:** 재현 불가 증빙(테스트 코드, 실행 로그) 또는 설계상 불가 근거 필수. 증거 없는 기각은 수용으로 간주.
 - **승리 조건:** 코드평가자 8+/10
 
 ### 코드평가자 (Code Critic)
@@ -75,21 +81,24 @@ Code GAN은 아래를 입력으로 받는다:
 - **심각도:** CRITICAL / MAJOR / MINOR
 - **규칙:**
   - 파일:라인 필수
-  - **재현 시나리오 필수** (공격 스텝 1, 2, 3... → 예상 결과)
+  - **재현 절차 필수:** `1) X를 한다 2) Y를 한다 → 예상: Z, 실제: W`
   - 수정 제안 필수
   - Guardrail 지표 위반 시 자동 CRITICAL
 
 ## Scoring Rubric
 
-| 점수 | 기준 |
-|------|------|
-| 9-10 | CRITICAL 0, MAJOR 0, Guardrail 전부 달성, 빌드/테스트 PASS |
-| 7-8 | CRITICAL 0, MAJOR ≤1 (수용됨), Guardrail 달성 |
-| 5-6 | CRITICAL 0, MAJOR 2+ 미해결 |
-| 3-4 | CRITICAL 1+ 미해결 또는 Guardrail 위반 |
-| 1-2 | 빌드 실패 또는 핵심 기능 미작동 |
+산식: `기본 10점 - (CRITICAL × 4) - (미해결 MAJOR × 1.5) - (Guardrail FAIL × 2)`
 
-PASS = 8+.
+| 점수 | 산식 결과 |
+|------|----------|
+| 9-10 | 9.0+ |
+| 8 | 8.0-8.9 |
+| 7 | 7.0-7.9 |
+| 5-6 | 5.0-6.9 |
+| 3-4 | 3.0-4.9 |
+| 1-2 | <3.0 또는 빌드 실패 |
+
+PASS = 8.0+.
 
 ## Output Format
 
@@ -98,21 +107,20 @@ PASS = 8+.
 ## Code GAN Round N
 
 VERDICT: FAIL or PASS
-Score: X/10
-Rubric 근거: CRITICAL N개, MAJOR N개, Guardrail 달성 N/M
+Score: X/10 (산식: 10 - CRIT×4 - MAJOR×1.5 - GR_FAIL×2 = X)
 
 ### CRITICAL
-- [FILE:LINE] 문제.
-  재현: 1) ... 2) ... 3) ... → 결과: ...
+- [CODE-00N][FILE:LINE] 문제.
+  재현: 1) ... 2) ... → 예상: ... 실제: ...
   수정 제안: ...
 
 ### MAJOR
-- [FILE:LINE] 문제. 영향: ...
+- [CODE-00N][FILE:LINE] 문제. 영향: ...
   수정: ...
 
 ### MINOR
 - [FILE:LINE] 제안: ...
 
 ### Guardrail 검증
-- [지표명] 목표: N, 현재: M → PASS/FAIL
+- [SC-C01] 명령: `...` → 결과: N (목표: M) → PASS/FAIL
 ```
