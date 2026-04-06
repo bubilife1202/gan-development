@@ -7,7 +7,7 @@ description: Use when designing or improving product UX - adversarial loop betwe
 
 ## Overview
 
-생성자 vs 제품평가자. 확정된 사업모델을 제품으로 설계한다.
+제품설계자 vs 제품평가자. 확정된 사업모델을 제품으로 설계한다.
 
 ## Round Protocol
 
@@ -33,7 +33,7 @@ Product GAN은 Business GAN의 확정 산출물을 입력으로 받는다:
 
 ## Roles
 
-### 생성자 (Designer)
+### 제품설계자 (Product Designer)
 - **영역:** UX, 플로우, 정보구조, 와이어프레임, 인터랙션
 - **무기:** 플로우차트, 와이어프레임, 유저저니맵
 - **입력:** Business GAN의 확정 산출물

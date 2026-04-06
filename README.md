@@ -7,8 +7,8 @@ Adversarial product development skills for Claude Code.
 | Skill | Builder | Critic |
 |-------|---------|--------|
 | `gan:business` | 사업기획자 | 사업평가자 |
-| `gan:product` | 생성자 | 제품평가자 |
-| `gan:code` | 구현자 | 코드평가자 |
+| `gan:product` | 제품설계자 | 제품평가자 |
+| `gan:code` | 개발자 | 코드평가자 |
 
 ## Flow
 

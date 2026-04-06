@@ -7,7 +7,7 @@ description: Use when implementing or hardening code - adversarial loop between 
 
 ## Overview
 
-구현자 vs 코드평가자. 확정된 설계를 깨지지 않는 코드로 구현한다.
+개발자 vs 코드평가자. 확정된 설계를 깨지지 않는 코드로 구현한다.
 
 ## Round Protocol
 
@@ -28,11 +28,11 @@ Code GAN은 아래를 입력으로 받는다:
 - Product GAN 확정 설계
 - **Scorecard의 Code GAN 판정 기준 (Guardrail 지표)**
 
-구현자는 설계 변경 권한 없음. 설계 결함 발견 시 보고만 하고, Product GAN이 재개되어 수정 후 복귀.
+개발자는 설계 변경 권한 없음. 설계 결함 발견 시 보고만 하고, Product GAN이 재개되어 수정 후 복귀.
 
 ## Roles
 
-### 구현자 (Implementer)
+### 개발자 (Developer)
 - **영역:** 코드, 아키텍처, DB 스키마, API, 컴포넌트
 - **무기:** 코드 작성, 리팩토링, 마이그레이션, 테스트
 - **입력:** Product GAN 확정 설계
