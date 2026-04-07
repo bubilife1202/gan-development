@@ -58,8 +58,9 @@ Code GAN은 아래를 입력으로 받는다:
   - 테스트 명령: `<프로젝트 테스트 명령>` → 결과: N/M passed (로그 첨부)
 
   ### Guardrail 측정 증빙
-  - [SC-C01] 측정 명령: `npx lighthouse URL --output=json` → 점수: N (목표: M)
-  - [SC-C02] 측정 명령: `npm audit` → CRITICAL: N (목표: 0)
+  - [SC-C01] 측정 명령: `<프로젝트에 적합한 측정 도구>` → 결과: N (목표: M)
+  - [SC-C02] 측정 명령: `<프로젝트에 적합한 보안 감사 도구>` → 결과: N (목표: 0)
+  (예: JS → `npx lighthouse`, `npm audit` / Python → `pytest --benchmark`, `pip-audit` / Go → `go test -bench`, `govulncheck`)
 
   ### 리스크 레지스터 대응
   - [RISK-001] → 코드에서 이렇게 완화: 파일:라인
@@ -153,14 +154,16 @@ Persona: [악의적 사용자 / 성능 감사관 / 타입 시스템 집행자]
 Score: X/10 (산식: 10 - CRIT×4 - MAJOR×1.5 - GR_FAIL×2 = X)
 
 ### CRITICAL
-- [CODE-00N][FILE:LINE] 문제.
+- [CODE-00N][FILE:LINE][미해결] 문제.
   재현: 1) ... 2) ... → 예상: ... 실제: ...
   수정 제안: ...
 
 ### MAJOR
-- [CODE-00N][FILE:LINE] 문제.
+- [CODE-00N][FILE:LINE][미해결] 문제.
   재현: 1) ... 2) ... → 예상: ... 실제: ...
   수정: ...
+
+(Round 2+ 보고서에서는 이전 라운드 항목에 [해결] 또는 [미해결] 상태를 명시)
 
 ### MINOR
 - [CODE-00N][FILE:LINE] 제안: ...

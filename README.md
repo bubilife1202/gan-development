@@ -31,7 +31,7 @@ Code GAN은 Product GAN과 Design GAN 양쪽의 확정 산출물을 입력으로
 3. **Deadlock = STOP.** 4라운드 미수렴 시 자동 진행 금지. 사용자에게 판단 요청.
 4. **Evidence required.** Builder의 기각에는 반박 증거 필수. Critic의 공격에는 근거 필수. 증거 없는 주장은 무효.
 5. **Scorecard flows down.** Business GAN이 확정한 지표가 하위 GAN의 판정 기준으로 전달. 하위 GAN은 매 라운드 측정값을 명시.
-6. **Scoring is formula-based.** 각 GAN은 고유 심각도 체계와 산식을 정의한다. 공통 원칙: `기본 10점 - (심각도별 가중치 합)`. 8.0+ = PASS. 정확한 심각도 명칭과 가중치는 각 GAN의 Scoring Rubric 참조. 산식과 항목 매핑 필수.
+6. **Scoring is formula-based.** 각 GAN은 고유 심각도 체계와 산식을 정의한다. 공통 원칙: `기본 10점 - (심각도별 가중치 합) - (Scorecard/Guardrail 감점)`. 8.0+ = PASS. 정확한 심각도 명칭, 가중치, Scorecard/Guardrail 감점 항목은 각 GAN의 Scoring Rubric 참조. 산식과 항목 매핑 필수.
 7. **Traceability.** 모든 결정에 ID 부여 (BIZ-001 → PRD-001 → DSN-001 → CODE-001). 하위 결정은 상위를 참조.
 8. **Risk register propagates.** 리스크 레지스터는 모든 핸드오프에 포함. 하위 GAN은 미완화 리스크를 반드시 고려.
 9. **Handoff package is defined.** 각 GAN의 확정 산출물은 다음 GAN이 필요로 하는 항목을 빠짐없이 포함.

@@ -162,19 +162,21 @@ Code GAN에서 디자인 결함이 보고되면:
 ## Design GAN Round N
 
 VERDICT: FAIL or PASS
-Persona: [일반 사용자 / 브랜드 전문가 / 접근성 감사관]
+Persona: [일반 사용자 / 브랜드 전문가 / 시각 접근성 감사관]
 Score: X/10 (산식: 10 - DB×4 - MAJOR×1.5 - SC_FAIL×1 - FRICTION×0.5 = X)
 
 ### DEALBREAKER
-- [DSN-00N][차원] 문제.
+- [DSN-00N][차원][미해결] 문제.
   증거: [WCAG/경쟁사/원칙]
   잘하면 이렇다: ...
 
 ### MAJOR
-- [DSN-00N][차원] 문제. 증거: ...
+- [DSN-00N][차원][미해결] 문제. 증거: ...
 
 ### FRICTION
-- [DSN-00N][차원] 불편한 부분. 증거: ...
+- [DSN-00N][차원][미해결] 불편한 부분. 증거: ...
+
+(Round 2+ 보고서에서는 이전 라운드 항목에 [해결] 또는 [미해결] 상태를 명시)
 
 ### POLISH
 - [DSN-00N][차원] 있으면 좋은 것
