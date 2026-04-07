@@ -19,7 +19,10 @@ Round N:
   4. Critic 재채점 (rubric 산식 적용)
   5. PASS(8+) → 확정 디자인 패키지 → Code GAN으로 핸드오프
      FAIL → Round N+1 (최대 4라운드)
-     Deadlock → STOP. 사용자에게 판단 요청. 자동 진행 금지.
+     Deadlock → STOP. 사용자에게 판단 요청. 자동 진행 금지. 미해결 항목을 제시하고 선택지 제공:
+       a) 특정 항목 수용/기각 지정 후 진행 (강제 진행 시 잔여 결함은 리스크 레지스터에 추가)
+       b) 추가 라운드 허용
+       c) GAN 중단
 ```
 
 ## Handoff: Product GAN → Design GAN
@@ -53,9 +56,12 @@ Design GAN은 아래를 입력으로 받는다:
   ### Scorecard 지표 대응
   - [SC-D01] 지표명: 현재값 (측정방법: ...) → PASS/FAIL
 
+  ### 리스크 레지스터 대응
+  - [RISK-001] → 디자인에서 이렇게 완화: ...
+
   ### Critic 피드백 대응 (Round 2+)
-  - [수용] 항목명 → 수정 내용
-  - [기각] 항목명 → 기각 사유 + 디자인 원칙/사례 근거
+  - [수용] 항목명 [DSN-00N] → 수정 내용
+  - [기각] 항목명 [DSN-00N] → 기각 사유 + 디자인 원칙/사례 근거
   ```
 - **결정ID 규칙:** `DSN-001` 형태. Product 결정 참조 시 `(참조: PRD-00N)`.
 - **기각 규칙:** 증거 없는 기각은 수용으로 간주. 디자인 원칙(Gestalt, 접근성 기준, 브랜드 가이드) 인용 필수.
@@ -136,6 +142,9 @@ PASS 시 아래를 Code GAN에 전달:
 
 ### 6. 결정 추적
 - DSN-001 ← PRD-001 ← BIZ-001
+
+### 7. 전달 데이터 (Pass-through)
+- 하위 GAN용 Scorecard (SC-C, SC-L)
 ```
 
 ## Output Format
@@ -146,7 +155,7 @@ PASS 시 아래를 Code GAN에 전달:
 
 VERDICT: FAIL or PASS
 Persona: [일반 사용자 / 브랜드 전문가 / 접근성 감사관]
-Score: X/10 (산식: 10 - DB×4 - MAJOR×1.5 - SC_FAIL×1 = X)
+Score: X/10 (산식: 10 - DB×4 - MAJOR×1.5 - SC_FAIL×1 - FRICTION×0.5 = X)
 
 ### DEALBREAKER
 - [DSN-00N][차원] 문제.
@@ -157,10 +166,10 @@ Score: X/10 (산식: 10 - DB×4 - MAJOR×1.5 - SC_FAIL×1 = X)
 - [DSN-00N][차원] 문제. 증거: ...
 
 ### FRICTION
-- [차원] 불편한 부분. 증거: ...
+- [DSN-00N][차원] 불편한 부분. 증거: ...
 
 ### POLISH
-- [차원] 있으면 좋은 것
+- [DSN-00N][차원] 있으면 좋은 것
 
 ### Scorecard 검증
 - [SC-D01] 목표: N, 현재: M, 측정방법: ... → PASS/FAIL

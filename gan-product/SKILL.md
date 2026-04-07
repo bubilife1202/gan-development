@@ -19,7 +19,10 @@ Round N:
   4. Critic 재채점 (rubric 산식 적용)
   5. PASS(8+) → 확정 설계 패키지 → Design GAN으로 핸드오프
      FAIL → Round N+1 (최대 4라운드)
-     Deadlock → STOP. 사용자에게 판단 요청. 자동 진행 금지.
+     Deadlock → STOP. 사용자에게 판단 요청. 자동 진행 금지. 미해결 항목을 제시하고 선택지 제공:
+       a) 특정 항목 수용/기각 지정 후 진행 (강제 진행 시 잔여 결함은 리스크 레지스터에 추가)
+       b) 추가 라운드 허용
+       c) GAN 중단
 ```
 
 ## Handoff: Business GAN → Product GAN
@@ -54,8 +57,8 @@ Product GAN은 Business GAN의 확정 산출물 전체를 입력으로 받는다
   - [RISK-001] → 설계에서 이렇게 완화: ...
 
   ### Critic 피드백 대응 (Round 2+)
-  - [수용] 항목명 → 수정 내용
-  - [기각] 항목명 → 기각 사유 + 증거 (경쟁사 사례/휴리스틱 분석/유저 테스트 결과)
+  - [수용] 항목명 [PRD-00N] → 수정 내용
+  - [기각] 항목명 [PRD-00N] → 기각 사유 + 증거 (경쟁사 사례/휴리스틱 분석/유저 테스트 결과)
   ```
 - **결정ID 규칙:** `PRD-001`, `PRD-002` 형태. Business 결정을 참조할 때 `(참조: BIZ-00N)` 명시.
 - **기각 규칙:** 증거 없는 기각은 수용으로 간주.
@@ -131,6 +134,10 @@ PASS 시 아래를 반드시 포함:
 ### 6. Business 결정 추적
 - PRD-001 ← BIZ-001
 - PRD-002 ← BIZ-003
+
+### 7. 전달 데이터 (Pass-through)
+- 타겟 페르소나
+- 하위 GAN용 Scorecard (SC-D, SC-C, SC-L)
 ```
 
 ## 하위 GAN 결함 보고 처리
@@ -149,7 +156,7 @@ PASS 시 아래를 반드시 포함:
 
 VERDICT: FAIL or PASS
 Persona: [첫 방문 사용자 / 파워 유저 / 접근성 감사관]
-Score: X/10 (산식: 10 - DB×4 - MAJOR×1.5 - SC_FAIL×1 = X)
+Score: X/10 (산식: 10 - DB×4 - MAJOR×1.5 - SC_FAIL×1 - FRICTION×0.5 = X)
 
 ### DEALBREAKER
 - [PRD-00N][차원] 문제. 유저 시나리오: "나는..."
@@ -162,11 +169,11 @@ Score: X/10 (산식: 10 - DB×4 - MAJOR×1.5 - SC_FAIL×1 = X)
   잘하면 이렇다: ...
 
 ### FRICTION
-- [차원] 불편한 순간. 유저 시나리오: "나는..."
+- [PRD-00N][차원] 불편한 순간. 유저 시나리오: "나는..."
   증거: ...
 
 ### POLISH
-- [차원] 있으면 좋은 것
+- [PRD-00N][차원] 있으면 좋은 것
 
 ### Scorecard 검증
 - [SC-P01] 목표: N, 현재: M, 측정방법: ... → PASS/FAIL
