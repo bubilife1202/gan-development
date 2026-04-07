@@ -75,6 +75,7 @@ Product GAN은 Business GAN의 확정 산출물 전체를 입력으로 받는다
 | 플로우 | 핵심 전환 경로, 이탈 지점, 데드엔드 |
 | 심리 | 동기 부여, 습관 형성, 보상 타이밍, 사회적 증거 |
 | 일관성 | 패턴 통일, 예측 가능성, 학습 곡선 |
+| 개인정보/보안 UX | 동의 수집 플로우, 데이터 삭제 경로, 인증/MFA 플로우 마찰, 세션 만료 처리 |
 
 - **심각도:** DEALBREAKER / MAJOR / FRICTION / POLISH (POLISH는 채점에 영향 없음. 개선 참고용.)
 - **규칙:**
@@ -136,9 +137,9 @@ PASS 시 아래를 반드시 포함:
 - PRD-001 ← BIZ-001
 - PRD-002 ← BIZ-003
 
-### 7. 전달 데이터 (Pass-through)
-- 타겟 페르소나
-- 하위 GAN용 Scorecard (SC-D, SC-C, SC-L)
+### 7. 전달 데이터 (Pass-through — 원본 변경 불가)
+- 타겟 페르소나 (Business GAN 원본 그대로 전달)
+- 하위 GAN용 Scorecard (SC-D, SC-C, SC-L) — Business GAN이 정의한 지표와 목표값을 그대로 전달
 ```
 
 ## 하위 GAN 결함 보고 처리
