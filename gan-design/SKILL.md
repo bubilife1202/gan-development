@@ -7,14 +7,14 @@ description: Use when creating or improving visual design - adversarial loop bet
 
 ## Overview
 
-디자이너 vs 디자인평가자. 확정된 UX 설계를 시각적으로 완성한다. Product GAN과 병렬 실행 가능.
+디자이너 vs 디자인평가자. 확정된 UX 설계를 시각적으로 완성한다. Product GAN 확정 산출물이 필요하므로 Product GAN 완료 후 실행.
 
 ## Round Protocol
 
 ```
 Round N:
   1. Builder 제출 (디자인안 + Scorecard 지표 대응 + 디자인 토큰 정의)
-  2. Critic 공격 (심각도별 + 스크린샷/비교 근거 + "잘하면 이렇다")
+  2. Critic 공격 (심각도별 + 구체적 비교 근거 (경쟁사 사례 URL, 디자인 원칙 인용, 수치 기반 비교) + "잘하면 이렇다")
   3. Builder 반박/수용 선언 (항목별 + 디자인 원칙 근거)
   4. Critic 재채점 (rubric 산식 적용)
   5. PASS(8+) → 확정 디자인 패키지 → Code GAN으로 핸드오프
@@ -74,27 +74,38 @@ Design GAN은 아래를 입력으로 받는다:
 | 반응형 | 모바일/태블릿/데스크톱 레이아웃, 터치 UX |
 | 컴포넌트 | 재사용성, 상태 표현 (hover, active, disabled, error, empty) |
 | 타이포 | 읽기 편한가, 위계가 명확한가, 줄 간격 |
+| 토큰 일관성 | 정의된 토큰과 실제 사용값 일치, 토큰 누락, 하드코딩된 값 |
+| 구현 가능성 | 토큰이 CSS 변수로 변환 가능한가, 상태별 스타일이 구현 가능한 수준으로 정의되었는가 |
 
-- **심각도:** DEALBREAKER / MAJOR / FRICTION / POLISH
+- **심각도:** DEALBREAKER / MAJOR / FRICTION / POLISH (POLISH는 채점에 영향 없음. 개선 참고용.)
 - **규칙:**
   - **증거 필수:** WCAG 기준, 경쟁사 비교, 디자인 원칙 인용. "느낌상 안 좋다"는 지적 불가.
-  - 접근성 위반 시 자동 MAJOR (WCAG AA 미달 시 DEALBREAKER)
-  - Scorecard 지표 위반 시 자동 MAJOR
+  - 접근성 위반 심각도 규칙:
+    - WCAG AA 기준 미달 (색상 대비 4.5:1 미만 등): 자동 DEALBREAKER
+    - 기타 접근성 문제 (터치 타겟 미달, 포커스 순서 등): 자동 MAJOR
+  - Scorecard 지표 위반은 산식의 Scorecard FAIL 항으로만 반영 (MAJOR 카운트에 미포함)
+- **페르소나별 우선 공격 차원:**
+  - Round 1 일반 사용자: 시각 위계 + 일관성 차원 우선 공격. "어디를 봐야 할지 모르겠다"
+  - Round 2 브랜드 전문가: 브랜드 + 컴포넌트 차원 우선 공격. "브랜드 정체성이 약하다"
+  - Round 3+ 접근성 감사관 (시각적 접근성): 접근성 차원 중 색상 대비, 폰트 크기, 터치 타겟 우선 공격
+  - (모든 라운드에서 전 차원 공격 가능하나, 해당 페르소나의 우선 차원을 먼저 검토)
 
 ## Scoring Rubric
 
-산식: `기본 10점 - (DEALBREAKER × 4) - (미해결 MAJOR × 1.5) - (Scorecard FAIL × 1)`
+산식: `기본 10점 - (DEALBREAKER × 4) - (미해결 MAJOR × 1.5) - (Scorecard FAIL × 1) - (미해결 FRICTION × 0.5)`
 
-| 점수 | 산식 결과 |
-|------|----------|
-| 9-10 | 9.0+ |
-| 8 | 8.0-8.9 |
-| 7 | 7.0-7.9 |
-| 5-6 | 5.0-6.9 |
-| 3-4 | 3.0-4.9 |
-| 1-2 | <3.0 |
+| 산식 결과 | 판정 |
+|----------|------|
+| 8.0+     | PASS |
+| <8.0     | FAIL |
+
+DEALBREAKER가 1개라도 있으면 최대 6점이므로 자동 FAIL.
 
 PASS = 8.0+.
+
+### 해결/미해결 판정 기준
+- **해결:** Builder가 수용하고 수정을 반영한 항목. 또는 Builder가 유효한 증거로 기각하여 Critic이 재채점 시 해당 항목을 철회한 경우.
+- **미해결:** Builder가 수용했으나 수정이 미흡한 항목, 또는 증거 없이 기각하여 수용으로 간주된 항목, 또는 Critic이 재채점 시 여전히 유효하다고 판단한 항목.
 
 ## 확정 산출물 (Handoff Package)
 
