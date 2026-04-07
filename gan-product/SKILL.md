@@ -90,7 +90,7 @@ Product GAN은 Business GAN의 확정 산출물 전체를 입력으로 받는다
 
 ## Scoring Rubric
 
-산식: `기본 10점 - (DEALBREAKER × 4) - (미해결 MAJOR × 1.5) - (Scorecard FAIL × 1) - (미해결 FRICTION × 0.5)`
+산식: `기본 10점 - (미해결 DEALBREAKER × 4) - (미해결 MAJOR × 1.5) - (Scorecard FAIL × 1) - (미해결 FRICTION × 0.5)`
 
 | 산식 결과 | 판정 |
 |----------|------|

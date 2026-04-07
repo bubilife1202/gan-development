@@ -42,6 +42,11 @@ Round N:
   ### 증거
   - [BIZ-001] [출처 유형: 벤치마크/사례/데이터] 내용 (URL 또는 출처 명시)
 
+  ### Scorecard 초안
+  - [SC-P01] Product 지표명: 목표값 (근거: ...)
+  - [SC-D01] Design 지표명: 목표값 (근거: ...)
+  - [SC-C01] Code 지표명: 목표값 (근거: ...)
+
   ### Critic 피드백 대응 (Round 2+)
   - [수용] 항목명 [BIZ-00N] → 수정 내용
   - [기각] 항목명 [BIZ-00N] → 기각 사유 + 반박 증거
@@ -72,7 +77,9 @@ Round N:
 
 ## Scoring Rubric
 
-산식: `기본 10점 - (DEALBREAKER × 4) - (미해결 MAJOR × 2) - (미해결 CONCERN × 0.5)`
+산식: `기본 10점 - (미해결 DEALBREAKER × 4) - (미해결 MAJOR × 2) - (미해결 CONCERN × 0.5)`
+
+DEALBREAKER는 해결/미해결 구분을 따른다. Builder가 수정하면 Critic은 해당 DEALBREAKER를 철회하거나 MAJOR로 강등할 수 있다. 여전히 DEALBREAKER로 판단되면 감점 유지.
 
 | 산식 결과 | 판정 |
 |----------|------|
@@ -104,7 +111,7 @@ PASS 시 아래를 반드시 포함하여 다음 GAN에 전달:
 
 ### 3. Scorecard
 
-#### 비즈니스 목표 지표
+#### 비즈니스 목표 지표 (상위 목표 — 하위 GAN 판정에 직접 사용 안 함. SC-P/D/C의 근거로 참조)
 - [SC-BIZ01] 비즈니스 목표 지표명: 목표값 (근거: ...)
 - [SC-BIZ02] ...
 
@@ -135,7 +142,7 @@ PASS 시 아래를 반드시 포함하여 다음 GAN에 전달:
 
 VERDICT: FAIL or PASS
 Persona: [VC / CFO / 경쟁사 CEO]
-Score: X/10 (산식: 10 - DEALBREAKER×4 - MAJOR×2 - CONCERN×0.5 = X)
+Score: X/10 (산식: 10 - DB×4 - MAJOR×2 - CONCERN×0.5 = X)
 
 ### DEALBREAKER
 - [BIZ-00N][차원] 문제. 근거: [출처]

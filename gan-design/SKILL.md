@@ -28,7 +28,7 @@ Round N:
 ## Handoff: Product GAN → Design GAN
 
 Design GAN은 아래를 입력으로 받는다:
-- Product GAN 확정 설계 (유저 플로우, 페이지 목록, 정보 구조)
+- Product GAN 확정 설계 (유저 플로우, 페이지 목록, 정보 구조, Business 결정 추적 포함)
 - Scorecard의 Design GAN 판정 기준
 - 타겟 페르소나 (Business GAN에서 전파)
 - **리스크 레지스터** (있으면 디자인에서 고려)
@@ -87,7 +87,7 @@ Design GAN은 아래를 입력으로 받는다:
 - **규칙:**
   - **증거 필수:** WCAG 기준, 경쟁사 비교, 디자인 원칙 인용. "느낌상 안 좋다"는 지적 불가.
   - 접근성 위반 심각도 규칙:
-    - WCAG AA 기준 미달 (색상 대비 4.5:1 미만 등): 자동 DEALBREAKER
+    - WCAG AA 시각 접근성 기준 미달 (색상 대비 4.5:1 미만, 텍스트 크기, 터치 타겟 등): 자동 DEALBREAKER
     - 기타 접근성 문제 (터치 타겟 미달, 포커스 순서 등): 자동 MAJOR
   - Scorecard 지표 위반은 산식의 Scorecard FAIL 항으로만 반영 (MAJOR 카운트에 미포함)
 - **페르소나별 우선 공격 차원:**
@@ -98,7 +98,7 @@ Design GAN은 아래를 입력으로 받는다:
 
 ## Scoring Rubric
 
-산식: `기본 10점 - (DEALBREAKER × 4) - (미해결 MAJOR × 1.5) - (Scorecard FAIL × 1) - (미해결 FRICTION × 0.5)`
+산식: `기본 10점 - (미해결 DEALBREAKER × 4) - (미해결 MAJOR × 1.5) - (Scorecard FAIL × 1) - (미해결 FRICTION × 0.5)`
 
 | 산식 결과 | 판정 |
 |----------|------|
@@ -146,6 +146,14 @@ PASS 시 아래를 Code GAN에 전달:
 ### 7. 전달 데이터 (Pass-through)
 - 하위 GAN용 Scorecard (SC-C, SC-L)
 ```
+
+## 하위 GAN 결함 보고 처리
+
+Code GAN에서 디자인 결함이 보고되면:
+1. 현재 Code GAN 루프 일시 중단
+2. 사용자에게 결함 내용 제시 + Design GAN 재개 여부 확인
+3. 재개 시, 기존 확정 산출물의 해당 결정ID를 수정 (변경 이력 기록)
+4. 수정된 산출물을 Code GAN에 재전달, Code GAN은 영향받은 결정만 재검토
 
 ## Output Format
 
